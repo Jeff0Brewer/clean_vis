@@ -10,6 +10,7 @@ class CleanVis{
             dot: shader_inds[1]
         };
         this.fpv = 2;
+        this.offset = [-this.w/2, -this.h/2];
 
         this.bars = [];
         let max_f = 255;
@@ -30,6 +31,7 @@ class CleanVis{
         this.a_Pos_lin = gl.getAttribLocation(gl.program, 'a_Pos');
 		gl.vertexAttribPointer(this.a_Pos_lin, this.fpv, gl.FLOAT, false, this.fsize*this.fpv, 0);
 		gl.enableVertexAttribArray(this.a_Pos_lin);
+        gl.uniform2fv(gl.getUniformLocation(gl.program, 'u_Off'), this.offset);
 
         switch_shader(this.sh.dot);
         this.gl_dot_buf = gl.createBuffer();
@@ -39,9 +41,11 @@ class CleanVis{
         this.a_Pos_dot = gl.getAttribLocation(gl.program, 'a_Pos');
 		gl.vertexAttribPointer(this.a_Pos_dot, this.fpv, gl.FLOAT, false, this.fsize*this.fpv, 0);
 		gl.enableVertexAttribArray(this.a_Pos_dot);
+        gl.uniform2fv(gl.getUniformLocation(gl.program, 'u_Off'), this.offset);
 
         this.u_Radius = gl.getUniformLocation(gl.program, 'u_Radius');
         this.u_IR = gl.getUniformLocation(gl.program, 'u_IR');
+        this.u_Off_lin = gl.getUniformLocation(gl.program, 'u_Off');
     }
 
     update(elapsed, fft){
@@ -50,7 +54,7 @@ class CleanVis{
         let dot_ind = 0;
         for(let i = 0; i < this.num; i++, lin_ind += 8, dot_ind += 2){
             this.bars[i].update(fft.sub_pro(i*inc, (i+1)*inc), elapsed);
-            let x = i/(this.num - 1)*this.w - this.w/2;
+            let x = i/(this.num - 1)*this.w;
 
             this.lin_buf[lin_ind + 0] = x;
             this.lin_buf[lin_ind + 1] = this.bars[i].mid*this.h + this.r;
@@ -78,7 +82,7 @@ class CleanVis{
         gl.bufferData(gl.ARRAY_BUFFER, this.dot_buf, gl.DYNAMIC_DRAW);
 		gl.vertexAttribPointer(this.a_Pos_dot, this.fpv, gl.FLOAT, false, this.fsize*this.fpv, 0);
         gl.uniform1f(this.u_Radius, this.r_px);
-        gl.uniform1f(this.u_IR, 1 - 2/this.r_px);
+        gl.uniform1f(this.u_IR, 1 - 1/this.r_px);
         gl.drawArrays(gl.POINTS, 0, this.dot_buf.length / this.fpv);
     }
 

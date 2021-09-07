@@ -35,9 +35,10 @@
 
 	<script id="v_line" type="glsl">
 		attribute vec2 a_Pos;
+		uniform vec2 u_Off;
 
 		void main(){
-			gl_Position = vec4(a_Pos.x, a_Pos.y, 0.0, 1.0);
+			gl_Position = vec4(a_Pos.x + u_Off.x, a_Pos.y + u_Off.y, 0.0, 1.0);
 		}
 	</script>
 	<script id="f_line" type="glsl">
@@ -50,10 +51,11 @@
 	<script id="v_dot" type="glsl">
 		attribute vec2 a_Pos;
 		uniform float u_Radius;
+		uniform vec2 u_Off;
 
 		void main(){
-			gl_Position = vec4(a_Pos.x, a_Pos.y, 0.0, 1.0);
-			gl_PointSize = u_Radius;
+			gl_Position = vec4(a_Pos.x + u_Off.x, a_Pos.y + u_Off.y, 0.0, 1.0);
+			gl_PointSize = u_Radius*1.5;
 		}
 
 	</script>
@@ -63,11 +65,11 @@
 		uniform float u_IR;
 
 		void main(){
-			float r = 0.0, mid = 0.0, alpha = 1.0;
+			float r = 0.0, mid = 0.0, alpha = 1.0, scl_f = 1.5;
 			vec2 cxy = 2.0*gl_PointCoord - 1.0;
 			r = dot(cxy,cxy);
 			mid = (1.0 + u_IR)/2.0;
-			alpha = pow(1.0 - pow(abs(mid - r), 0.8), 5.0);
+			alpha = pow(max(1.0 - pow(abs(mid/scl_f - r*scl_f), 0.8), 0.0), 6.0);
 			gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0) * alpha;
 		}
 	</script>
