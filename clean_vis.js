@@ -10,7 +10,7 @@ class CleanVis{
             dot: shader_inds[1]
         };
         this.fpv = 2;
-        this.offset = [fit_pixel_xlen(-this.w/2), -this.h/2];
+        this.offset = [-this.w/2, -this.h/2];
 
         this.bars = [];
         let max_f = 255;
@@ -51,12 +51,11 @@ class CleanVis{
 
     update(elapsed, fft){
         let f_inc = .75/this.num;
-        let x_inc = fit_pixel_xlen(this.w/(this.num - 1));
+        let x_inc = this.w/(this.num - 1);
         let lin_ind = 0;
         let dot_ind = 0;
         for(let i = 0; i < this.num; i++, lin_ind += 8, dot_ind += 2){
             this.bars[i].update(fft.sub_pro(i*f_inc, (i+1)*f_inc), elapsed);
-
             let x = i*x_inc;
 
             this.lin_buf[lin_ind + 0] = x;
@@ -114,9 +113,4 @@ class FreqBar{
         this.top = Math.max(this.mid, this.top);
         this.bot = Math.min(this.mid, this.bot);
     }
-}
-
-const fit_pixel_xlen = function(len){
-    let scr_width = window.innerWidth*window.devicePixelRatio;
-    return Math.floor(len * scr_width) / scr_width;
 }
