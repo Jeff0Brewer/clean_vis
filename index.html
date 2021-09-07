@@ -63,13 +63,14 @@
 		precision highp float;
 
 		uniform float u_IR;
+		uniform float u_DevicePixelRatio;
 
 		void main(){
 			float r = 0.0, mid = 0.0, alpha = 1.0, scl_f = 1.5;
 			vec2 cxy = 2.0*gl_PointCoord - 1.0;
 			r = dot(cxy,cxy);
 			mid = (1.0 + u_IR)/2.0;
-			alpha = pow(max(1.0 - pow(abs(mid/scl_f - r*scl_f), 0.8), 0.0), 6.0);
+			alpha = pow(max(1.0 - pow(abs(mid/scl_f - r*scl_f), 0.8), 0.0), 5.0*u_DevicePixelRatio);
 			gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0) * alpha;
 		}
 	</script>

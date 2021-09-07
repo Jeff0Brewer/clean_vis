@@ -10,7 +10,7 @@ class CleanVis{
             dot: shader_inds[1]
         };
         this.fpv = 2;
-        this.offset = [-this.w/2, -this.h/2];
+        this.offset = [fit_pixel_xlen(-this.w/2), -this.h/2];
 
         this.bars = [];
         let max_f = 255;
@@ -41,20 +41,23 @@ class CleanVis{
         this.a_Pos_dot = gl.getAttribLocation(gl.program, 'a_Pos');
 		gl.vertexAttribPointer(this.a_Pos_dot, this.fpv, gl.FLOAT, false, this.fsize*this.fpv, 0);
 		gl.enableVertexAttribArray(this.a_Pos_dot);
-        gl.uniform2fv(gl.getUniformLocation(gl.program, 'u_Off'), this.offset);
 
         this.u_Radius = gl.getUniformLocation(gl.program, 'u_Radius');
         this.u_IR = gl.getUniformLocation(gl.program, 'u_IR');
-        this.u_Off_lin = gl.getUniformLocation(gl.program, 'u_Off');
+        this.u_DevicePixelRatio = gl.getUniformLocation(gl.program, 'u_DevicePixelRatio');
+        gl.uniform1f(this.u_DevicePixelRatio, window.devicePixelRatio);
+        gl.uniform2fv(gl.getUniformLocation(gl.program, 'u_Off'), this.offset);
     }
 
     update(elapsed, fft){
-        let inc = .75/this.num;
+        let f_inc = .75/this.num;
+        let x_inc = fit_pixel_xlen(this.w/(this.num - 1));
         let lin_ind = 0;
         let dot_ind = 0;
         for(let i = 0; i < this.num; i++, lin_ind += 8, dot_ind += 2){
-            this.bars[i].update(fft.sub_pro(i*inc, (i+1)*inc), elapsed);
-            let x = i/(this.num - 1)*this.w;
+            this.bars[i].update(fft.sub_pro(i*f_inc, (i+1)*f_inc), elapsed);
+
+            let x = i*x_inc;
 
             this.lin_buf[lin_ind + 0] = x;
             this.lin_buf[lin_ind + 1] = this.bars[i].mid*this.h + this.r;
@@ -88,9 +91,9 @@ class CleanVis{
 
     resize(){
         this.r_px = this.r*window.innerHeight*window.devicePixelRatio;
+        gl.uniform1f(this.u_DevicePixelRatio, window.devicePixelRatio);
     }
 }
-
 
 class FreqBar{
     constructor(max_f, decay){
@@ -111,4 +114,9 @@ class FreqBar{
         this.top = Math.max(this.mid, this.top);
         this.bot = Math.min(this.mid, this.bot);
     }
+}
+
+const fit_pixel_xlen = function(len){
+    let scr_width = window.innerWidth*window.devicePixelRatio;
+    return Math.floor(len * scr_width) / scr_width;
 }

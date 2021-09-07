@@ -17,7 +17,7 @@ function main(){
 	setup_gl();
 
 	//initialize visualization
-	vis = new CleanVis(30, 1.1, .8, .035, [0, 1]);
+	vis = new CleanVis(25, 1.1, .8, .03, [0, 1]);
 
 	//start drawing loop
 	let last_t = Date.now();
