@@ -1,0 +1,248 @@
+html, body{
+	position: relative;
+	overflow: hidden;;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	background: #000000;
+}
+
+.c{
+	position: absolute;
+	left: 0;
+	top: 0;
+	margin: 0;
+	padding: 0;
+	width: 100vw;
+	height: 100vh;
+	pointer-events: none;
+}
+
+.vignette{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: radial-gradient(circle, transparent 70%, black 100%);
+	z-index: 1;
+}
+
+.menu{
+	position: absolute;
+	left: 0;
+	top: 5px;
+	width: 325px;
+	user-select: none;
+	z-index: 2;
+}
+
+.scroll_bar{
+	position: absolute;
+	left: 335px;
+	width: 1px;
+	height: 0;
+	margin-top: 5px;
+	background-color: white;
+}
+
+.sb{
+	animation-name: fade_sb;
+}
+
+.song_list{
+	position: relative;
+	float: left;
+	width: 325px;
+	max-height: 70vh;
+	padding-right: 20px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	box-sizing: content-box;
+	background-color: transparent;
+}
+
+.menu_item{
+	position: relative;
+	width: 100%;
+	height: 40px;
+	overflow: hidden;
+	color: white;
+	font-family: roboto;
+	font-size: 14px;
+	line-height: 40px;
+	padding-left: 10px;
+	opacity: .4;
+}
+
+.mi{
+	animation-name: fade_mi;
+}
+
+.selected{
+	opacity: 1;
+	height: 50px;
+}
+
+.song_name{
+	width: calc(100% - 40px);
+	height: 100%;
+	float: left;
+	overflow: hidden;
+}
+
+.play_pause{
+	position: relative;
+	float: right;
+	cursor: pointer;
+}
+
+.progress_base{
+	position: relative;
+	border-style: solid;
+	border-width: 0 1px 0 1px;
+	width: calc(100% - 12px);
+	height: 3px;
+	cursor: grab;
+}
+
+.progress_bar{
+	height: 100%;
+	width: 0%;
+	max-width: 100%;
+	background: white;
+	pointer-events: none;
+}
+
+.list_wrapper{
+	display: inline-block;
+	width: 325px;
+	overflow-x: hidden;
+	height: auto;
+}
+
+.menu_div{
+	border-style: solid;
+	border-color: white;
+	border-width: 1px 0 0 0;
+}
+
+.file_button{
+	text-align: left;
+	height: 40px;
+	font-family: roboto-thin;
+	font-size: 15px;
+	line-height: 40px;
+	opacity: 1;
+	cursor: pointer;
+}
+
+.fb{
+	animation-name: fade_fb;
+}
+
+.file_input{
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+}
+
+.vol_bar{
+	padding-right: 10px;
+	float: right;
+	line-height: 40px;
+	font-size: 18px;
+	color: #FFF;
+}
+
+.vol_outer{
+	display: inline-block;
+	position: relative;
+	top: -2px;
+	margin-left: 5px;
+	width: 80px;
+	height: 6px;
+	border-style: solid;
+	border-color: white;
+	border-width: 1px;
+	overflow: hidden;
+	animation-name: fold_vol;
+}
+
+.vol_inner{
+	width: 40px;
+	height: 100%;
+	background-color: white;
+}
+
+.hidden{
+	visibility: hidden;
+	position: absolute;
+	width: 0;
+	height: 0;
+}
+
+.hover{
+	color: #DFDFDF;
+}
+
+.out{
+	animation-fill-mode: forwards;
+	animation-duration: 1s;
+}
+
+.in{
+	animation-direction: reverse;
+	animation-fill-mode: forwards;
+	animation-duration: .3s;
+}
+
+@keyframes fold_vol{
+	from{
+		width: 80px;
+	}
+	to{
+		width: 0px;
+	}
+}
+
+@keyframes fade_sb{
+	from{
+		opacity: 1;
+	}
+	to{
+		opacity: 0;
+	}
+}
+
+@keyframes fade_fb{
+	from{
+		line-height: 40px;
+		opacity: 1;
+	}
+	to{
+		line-height: 0px;
+		opacity: 0;
+	}
+}
+
+@keyframes fade_mi{
+	from{
+		opacity: .4;
+	}
+	to{
+		opacity: 0;
+	}
+}
+
+@font-face{
+	font-family: roboto-thin;
+	src: url('Roboto-Thin.ttf');
+}
+
+@font-face{
+	font-family: roboto;
+	src: url('Roboto-Light.ttf');
+}

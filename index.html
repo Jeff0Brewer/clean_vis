@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>vis</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body onload="main()">
+	<canvas class="c" id="c"></canvas>
+	<div id="menu" class="menu">
+		<div id="scroll_bar" class="scroll_bar sb"></div>
+		<div class="list_wrapper">
+			<div id="song_list" class="song_list">
+				<div id="item_template" class="menu_item mi hidden" >
+					<div class="song_name">mix3</div>
+					<div class="play_pause">
+						<svg class="symbol" width="40" height="40">
+							<polygon points="13,13 13,27 27,20" style="fill:white;"/>
+						</svg>
+						<svg class="symbol hidden" width="40" height="40">
+							<polygon points="13,13 13,27 18,27 18,13" style="fill:white;"/>
+							<polygon points="27,13 27,27 22,27 22,13" style="fill:white;"/>
+						</svg>
+					</div>
+					<br>
+					<div id="progress_base" class="progress_base">
+						<div id="progress_bar" class="progress_bar"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="menu_div" class="menu_div sb"></div>
+		<label id="file_button" class="menu_item file_button fb" for="file_input">+ new playlist</label>
+	</div>
+	<input id="file_input" class="file_input" type="file" accept="audio/*" multiple="multiple">
+
+	<script id="v_line" type="glsl">
+		attribute vec2 a_Pos;
+
+		void main(){
+			gl_Position = vec4(a_Pos.x, a_Pos.y, 0.0, 1.0);
+		}
+	</script>
+	<script id="f_line" type="glsl">
+		precision highp float;
+		void main(){
+			gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+		}
+	</script>
+
+	<script id="v_dot" type="glsl">
+		attribute vec2 a_Pos;
+		uniform float u_Radius;
+
+		void main(){
+			gl_Position = vec4(a_Pos.x, a_Pos.y, 0.0, 1.0);
+			gl_PointSize = u_Radius;
+		}
+
+	</script>
+	<script id="f_dot" type="glsl">
+		precision highp float;
+
+		uniform float u_IR;
+
+		void main(){
+			float r = 0.0, mid = 0.0, alpha = 1.0;
+			vec2 cxy = 2.0*gl_PointCoord - 1.0;
+			r = dot(cxy,cxy);
+			mid = (1.0 + u_IR)/2.0;
+			alpha = pow(1.0 - pow(abs(mid - r), 0.8), 5.0);
+			gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0) * alpha;
+		}
+	</script>
+	<script src="gl.js"></script>
+	<script src="num.js"></script>
+	<script src="vec.js"></script>
+	<script src="mat.js"></script>
+	<script src="audio_analysis.js"></script>
+	<script src="menu.js"></script>
+	<script src="clean_vis.js"></script>
+	<script src="main.js"></script>
+</body>
