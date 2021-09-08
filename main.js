@@ -17,7 +17,7 @@ function main(){
 	setup_gl();
 
 	//initialize visualization
-	vis = new CleanVis(25, 1.3, .8, .03, [0, 1]);
+	vis = new CleanVis(25, 1.3, .8, .03, [0, 1], canvas);
 
 	//start drawing loop
 	let last_t = Date.now();
@@ -33,7 +33,7 @@ function main(){
 				fft.get_data();
 			}
 			menu.update(elapsed);
-			vis.update(elapsed, fft);
+			vis.update(elapsed, fft, canvas);
 
 			gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
 			vis.draw();
@@ -59,5 +59,5 @@ document.body.onresize = function(){
 	if(gl){
 		gl.viewport(0, 0, canvas.width, canvas.height);
 	}
-	if(vis){ vis.resize(); }
+	if(vis){ vis.resize(canvas); }
 }

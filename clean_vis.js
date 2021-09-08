@@ -1,5 +1,5 @@
 class CleanVis{
-    constructor(num, width, height, radius, shader_inds){
+    constructor(num, width, height, radius, shader_inds, c){
         this.num = num;
         this.w = width;
         this.h = height;
@@ -11,10 +11,11 @@ class CleanVis{
         };
         this.fpv = 2;
         this.offset = [-this.w/2, -this.h/2];
+        this.scr_width = c.width;
 
         this.bars = [];
         let max_f = 255;
-        let decay = .6;
+        let decay = .5;
         for(let i = 0; i < num; i++){
             this.bars.push(new FreqBar(max_f, decay));
         }
@@ -56,7 +57,7 @@ class CleanVis{
         let dot_ind = 0;
         for(let i = 0; i < this.num; i++, lin_ind += 8, dot_ind += 2){
             this.bars[i].update(fft.sub_pro(i*f_inc, (i+1)*f_inc), elapsed);
-            let x = i*x_inc;
+            let x = fit_px_x(i*x_inc, 2.0, this.scr_width);
 
             this.lin_buf[lin_ind + 0] = x;
             this.lin_buf[lin_ind + 1] = this.bars[i].mid*this.h + this.r;
@@ -88,8 +89,10 @@ class CleanVis{
         gl.drawArrays(gl.POINTS, 0, this.dot_buf.length / this.fpv);
     }
 
-    resize(){
+    resize(c){
         this.r_px = this.r*window.innerHeight*window.devicePixelRatio;
+        this.scr_width = c.width;
+        switch_shader(this.sh.dot);
         gl.uniform1f(this.u_DevicePixelRatio, window.devicePixelRatio);
     }
 }
@@ -113,4 +116,8 @@ class FreqBar{
         this.top = Math.max(this.mid, this.top);
         this.bot = Math.min(this.mid, this.bot);
     }
+}
+
+const fit_px_x = function(len, max_len, scr_width){
+    return max_len*Math.floor(len/max_len*scr_width)/scr_width;
 }

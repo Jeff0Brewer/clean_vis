@@ -34,6 +34,8 @@
 	<input id="file_input" class="file_input" type="file" accept="audio/*" multiple="multiple">
 
 	<script id="v_line" type="glsl">
+		precision highp float;
+
 		attribute vec2 a_Pos;
 		uniform vec2 u_Off;
 
@@ -49,6 +51,8 @@
 	</script>
 
 	<script id="v_dot" type="glsl">
+		precision highp float;
+		
 		attribute vec2 a_Pos;
 		uniform float u_Radius;
 		uniform vec2 u_Off;
