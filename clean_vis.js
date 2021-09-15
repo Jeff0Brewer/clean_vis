@@ -15,9 +15,9 @@ class CleanVis{
 
         this.bars = [];
         let max_f = 255;
-        let decay = .5;
+        let memory = 500;
         for(let i = 0; i < num; i++){
-            this.bars.push(new FreqBar(max_f, decay));
+            this.bars.push(new FreqBar(max_f, memory));
         }
 
         this.lin_buf = new Float32Array(this.num*4*this.fpv);
@@ -98,23 +98,30 @@ class CleanVis{
 }
 
 class FreqBar{
-    constructor(max_f, decay){
+    constructor(max_f, memory){
         this.max_f = max_f;
-        this.decay = decay;
+        this.memory = memory;
 
         this.top = 0;
         this.mid = 0;
         this.bot = 0;
+        this.freqs = new Map();
+        this.t0 = Date.now();
     }
 
-    update(freq, elapsed){
+    update(freq){
         this.mid = freq/this.max_f;
 
-        this.top -= (this.top - this.mid) * this.decay * elapsed/1000;
-        this.bot += (this.mid - this.bot) * this.decay * elapsed/1000;
+        let timestamp = Date.now() - this.t0;
+        this.freqs.set(timestamp, freq/this.max_f);
 
-        this.top = Math.max(this.mid, this.top);
-        this.bot = Math.min(this.mid, this.bot);
+        let min_time = timestamp - this.memory
+        for(const key of this.freqs.keys()){
+            if(key < min_time){ this.freqs.delete(key); }
+        }
+
+        this.top = .9*this.top + .1*Math.max(...this.freqs.values());
+        this.bot = .9*this.bot + .1*Math.min(...this.freqs.values());
     }
 }
 
