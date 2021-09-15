@@ -51,7 +51,7 @@ class CleanVis{
     }
 
     update(elapsed, fft){
-        let f_inc = .75/this.num;
+        let f_inc = .7/this.num;
         let x_inc = this.w/(this.num - 1);
         let lin_ind = 0;
         let dot_ind = 0;
