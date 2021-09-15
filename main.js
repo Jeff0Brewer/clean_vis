@@ -13,8 +13,8 @@ menu.add_item(file.substring(0, file.lastIndexOf('.')), file);
 menu.select_item(0);
 
 //units in px
-let point_size = 25;
-let point_space = 10;
+let point_size = 30;
+let point_space = 12;
 let border_size = 200;
 let vis = null;
 const init_vis = () => {
