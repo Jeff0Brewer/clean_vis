@@ -120,8 +120,8 @@ class FreqBar{
             if(key < min_time){ this.freqs.delete(key); }
         }
 
-        this.top = .9*this.top + .1*Math.max(...this.freqs.values());
-        this.bot = .9*this.bot + .1*Math.min(...this.freqs.values());
+        this.top = Math.max(.9*this.top + .1*Math.max(...this.freqs.values()), this.mid);
+        this.bot = Math.min(.9*this.bot + .1*Math.min(...this.freqs.values()), this.mid);
     }
 }
 
