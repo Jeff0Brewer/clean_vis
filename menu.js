@@ -325,7 +325,7 @@ Menu.prototype.shift_order = function(i){
 //update the visual scrollbar after setting scroll_state
 Menu.prototype.update_scroll = function(){
 	if(this.scroll_max > 0){
-		let f = min_sclr(this.list_height/(this.scroll_max+this.list_height), .7);
+		let f = Math.min(this.list_height/(this.scroll_max+this.list_height), .7);
 		this.s_b.style.top = ((1 - f)*this.scroll_state/this.scroll_max*this.list_height).toString() + 'px';
 		this.s_b.style.height = (f*this.list_height).toString() + 'px';
 	}
@@ -340,6 +340,6 @@ Menu.prototype.resize = function(){
 		this.uncollapse();
 	this.list_height = this.s_l.getBoundingClientRect().height;
 	this.scroll_max = this.s_l.scrollHeight - this.list_height;
-	this.scroll_state = min_sclr(this.scroll_state, this.scroll_max);
+	this.scroll_state = Math.min(this.scroll_state, this.scroll_max);
 	this.update_scroll();
 }

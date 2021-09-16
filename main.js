@@ -17,21 +17,13 @@ let point_size = 30;
 let point_space = 12;
 let border_size = 200;
 let vis = null;
-const init_vis = () => {
-	let DPR = window.devicePixelRatio;
-	let num = Math.floor((canvas.width - 2*border_size*DPR)/(point_size*DPR + point_space*DPR));
-	let width = 2*(canvas.width - 2*border_size*DPR)/canvas.width;
-	let height = 2*(canvas.height - 2*border_size*DPR)/canvas.height;
-	let radius = point_size*DPR/canvas.height;
-	vis = new CleanVis(num, width, height, radius, [0, 1], canvas);
-};
 
 function main(){
 	//setup gl and uniforms
 	setup_gl();
 
 	//initialize visualization
-	init_vis();
+	vis = new CleanVis(point_size, point_space, border_size, [0, 1], canvas);
 
 	//start drawing loop
 	let last_t = Date.now();
@@ -73,5 +65,7 @@ document.body.onresize = function(){
 	if(gl){
 		gl.viewport(0, 0, canvas.width, canvas.height);
 	}
-	init_vis();
+	if(vis){
+		vis = new CleanVis(point_size, point_space, border_size, [0, 1], canvas);
+	}
 }
