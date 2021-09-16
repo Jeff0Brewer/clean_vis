@@ -4,7 +4,7 @@ class CleanVis{
         this.w = width;
         this.h = height;
         this.r = radius;
-        this.r_px = this.r*window.innerHeight*window.devicePixelRatio;
+        this.r_px = this.r*c.height;
         this.sh = {
             lin: shader_inds[0],
             dot: shader_inds[1]
@@ -45,8 +45,6 @@ class CleanVis{
 
         this.u_Radius = gl.getUniformLocation(gl.program, 'u_Radius');
         this.u_IR = gl.getUniformLocation(gl.program, 'u_IR');
-        this.u_DevicePixelRatio = gl.getUniformLocation(gl.program, 'u_DevicePixelRatio');
-        gl.uniform1f(this.u_DevicePixelRatio, window.devicePixelRatio);
         gl.uniform2fv(gl.getUniformLocation(gl.program, 'u_Off'), this.offset);
     }
 
@@ -88,13 +86,6 @@ class CleanVis{
         gl.uniform1f(this.u_IR, 1 - 1/this.r_px);
         gl.drawArrays(gl.POINTS, 0, this.dot_buf.length / this.fpv);
     }
-
-    resize(c){
-        this.r_px = this.r*window.innerHeight*window.devicePixelRatio;
-        this.scr_width = c.width;
-        switch_shader(this.sh.dot);
-        gl.uniform1f(this.u_DevicePixelRatio, window.devicePixelRatio);
-    }
 }
 
 class FreqBar{
@@ -126,5 +117,5 @@ class FreqBar{
 }
 
 const fit_px_x = function(len, max_len, scr_width){
-    return max_len*Math.floor(len/max_len*scr_width)/scr_width;
+    return (Math.floor(len/max_len*scr_width) + .5)/scr_width*max_len;
 }
