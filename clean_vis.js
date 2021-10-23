@@ -14,7 +14,6 @@ class CleanVis{
         };
         this.fpv = 2;
         this.offset = [Math.floor(border_size), Math.floor(border_size)];
-        this.scr_width = c.width;
 
         this.bars = [];
         let max_f = 255;
@@ -23,7 +22,7 @@ class CleanVis{
             this.bars.push(new FreqBar(max_f, memory));
         }
 
-        this.lin_buf = new Float32Array(this.num*4*this.fpv);
+        this.lin_buf = new Float32Array(this.num*12*this.fpv);
         this.dot_buf = new Float32Array(this.num*this.fpv);
         this.fsize = this.lin_buf.BYTES_PER_ELEMENT;
 
@@ -57,25 +56,63 @@ class CleanVis{
     }
 
     update(elapsed, fft){
+        let lin_width = devicePixelRatio
         let f_inc = .7/this.num;
         let x_inc = this.w/(this.num - 1);
         let lin_ind = 0;
         let dot_ind = 0;
-        for(let i = 0; i < this.num; i++, lin_ind += 8, dot_ind += 2){
+        for(let i = 0; i < this.num; i++){
             this.bars[i].update(fft.sub_pro(i*f_inc, (i+1)*f_inc), elapsed);
-            let x = Math.floor(i*x_inc) + .5;
+            let x_mid = Math.floor(i*x_inc) + .5;
+            let x = [
+                x_mid - lin_width/2,
+                x_mid + lin_width/2
+            ];
+            
+            let y = [
+                this.bars[i].mid*this.h + this.r, 
+                this.bars[i].top*this.h,
+                this.bars[i].mid*this.h - this.r,
+                this.bars[i].bot*this.h
+            ];
+            y[1] = Math.max(y[0], y[1]);
+            y[3] = Math.min(y[2], y[3]);
 
-            this.lin_buf[lin_ind + 0] = x;
-            this.lin_buf[lin_ind + 1] = this.bars[i].mid*this.h + this.r;
-            this.lin_buf[lin_ind + 2] = x;
-            this.lin_buf[lin_ind + 3] = Math.max(this.bars[i].top*this.h, this.lin_buf[lin_ind + 1]);
-            this.lin_buf[lin_ind + 4] = x;
-            this.lin_buf[lin_ind + 5] = this.bars[i].mid*this.h - this.r;
-            this.lin_buf[lin_ind + 6] = x;
-            this.lin_buf[lin_ind + 7] = Math.min(this.bars[i].bot*this.h, this.lin_buf[lin_ind + 5]);
+            this.lin_buf[lin_ind + 0] = x[0];
+            this.lin_buf[lin_ind + 1] = y[0];
+            this.lin_buf[lin_ind + 2] = x[0];
+            this.lin_buf[lin_ind + 3] = y[1];
+            this.lin_buf[lin_ind + 4] = x[1];
+            this.lin_buf[lin_ind + 5] = y[1];
+            lin_ind += 6;
 
-            this.dot_buf[dot_ind + 0] = x;
+            this.lin_buf[lin_ind + 0] = x[0];
+            this.lin_buf[lin_ind + 1] = y[0];
+            this.lin_buf[lin_ind + 2] = x[1];
+            this.lin_buf[lin_ind + 3] = y[1];
+            this.lin_buf[lin_ind + 4] = x[1];
+            this.lin_buf[lin_ind + 5] = y[0];
+            lin_ind += 6;
+
+            this.lin_buf[lin_ind + 0] = x[0];
+            this.lin_buf[lin_ind + 1] = y[2];
+            this.lin_buf[lin_ind + 2] = x[0];
+            this.lin_buf[lin_ind + 3] = y[3];
+            this.lin_buf[lin_ind + 4] = x[1];
+            this.lin_buf[lin_ind + 5] = y[3];
+            lin_ind += 6;
+
+            this.lin_buf[lin_ind + 0] = x[0];
+            this.lin_buf[lin_ind + 1] = y[2];
+            this.lin_buf[lin_ind + 2] = x[1];
+            this.lin_buf[lin_ind + 3] = y[3];
+            this.lin_buf[lin_ind + 4] = x[1];
+            this.lin_buf[lin_ind + 5] = y[2];
+            lin_ind += 6;
+
+            this.dot_buf[dot_ind + 0] = x_mid;
             this.dot_buf[dot_ind + 1] = this.bars[i].mid*this.h;
+            dot_ind += 2;
         }
     }
 
@@ -92,7 +129,7 @@ class CleanVis{
         gl.bindBuffer(gl.ARRAY_BUFFER, this.gl_lin_buf);
         gl.bufferData(gl.ARRAY_BUFFER, this.lin_buf, gl.DYNAMIC_DRAW);
 		gl.vertexAttribPointer(this.a_Pos_lin, this.fpv, gl.FLOAT, false, this.fsize*this.fpv, 0);
-        gl.drawArrays(gl.LINES, 0, this.lin_buf.length / this.fpv);
+        gl.drawArrays(gl.TRIANGLES, 0, this.lin_buf.length / this.fpv);
     }
 }
 
