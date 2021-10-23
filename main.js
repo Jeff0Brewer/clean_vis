@@ -1,7 +1,7 @@
 //get canvas object
 let canvas = document.getElementById('c');
-canvas.width = window.innerWidth*window.devicePixelRatio;
-canvas.height = window.innerHeight*window.devicePixelRatio;
+canvas.width = window.innerWidth * devicePixelRatio;
+canvas.height = window.innerHeight * devicePixelRatio;
 
 //initialize audio analyser variable
 let fft = new FFT();
@@ -59,8 +59,8 @@ document.body.onmousedown = function(){
 
 //handle window resizing
 document.body.onresize = function(){
-	canvas.width = window.innerWidth*window.devicePixelRatio;
-	canvas.height = window.innerHeight*window.devicePixelRatio;
+	canvas.width = window.innerWidth * devicePixelRatio;
+	canvas.height = window.innerHeight * devicePixelRatio;
 	menu.resize();
 	if(gl){
 		gl.viewport(0, 0, canvas.width, canvas.height);

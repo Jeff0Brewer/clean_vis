@@ -52,7 +52,7 @@ FFT.prototype.sub_pro = function(s, e){
 		if(s > 0)
 			s--;
 		else
-			e = min_sclr(e+1, this.pro_data.length - 1);
+			e = Math.min(e+1, this.pro_data.length - 1);
 	}
 	let slice = this.pro_data.slice(s, e);
 	let sum = 0;

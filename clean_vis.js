@@ -1,17 +1,19 @@
 class CleanVis{
     constructor(point_size, point_space, border_size, shader_inds, c){
-        let DPR = window.devicePixelRatio;
-        this.num = Math.floor((c.width - 2*border_size*DPR)/(point_size*DPR + point_space*DPR));
-        this.w = c.width - 2*border_size*DPR;
-        this.h = c.height - 2*border_size*DPR;
-        this.d = point_size*DPR;
+        point_size *= devicePixelRatio;
+        point_space *= devicePixelRatio;
+        border_size *= devicePixelRatio;
+        this.num = Math.floor((c.width - 2*border_size)/(point_size + point_space));
+        this.w = c.width - 2*border_size;
+        this.h = c.height - 2*border_size;
+        this.d = point_size;
         this.r = this.d/2;
         this.sh = {
             lin: shader_inds[0],
             dot: shader_inds[1]
         };
         this.fpv = 2;
-        this.offset = [Math.floor(border_size*DPR), Math.floor(border_size*DPR)];
+        this.offset = [Math.floor(border_size), Math.floor(border_size)];
         this.scr_width = c.width;
 
         this.bars = [];
