@@ -18,16 +18,6 @@ html, body{
 	pointer-events: none;
 }
 
-.vignette{
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 100vh;
-	background: radial-gradient(circle, transparent 70%, black 100%);
-	z-index: 1;
-}
-
 .menu{
 	position: absolute;
 	left: 0;
@@ -149,34 +139,6 @@ html, body{
 	position: absolute;
 }
 
-.vol_bar{
-	padding-right: 10px;
-	float: right;
-	line-height: 40px;
-	font-size: 18px;
-	color: #FFF;
-}
-
-.vol_outer{
-	display: inline-block;
-	position: relative;
-	top: -2px;
-	margin-left: 5px;
-	width: 80px;
-	height: 6px;
-	border-style: solid;
-	border-color: white;
-	border-width: 1px;
-	overflow: hidden;
-	animation-name: fold_vol;
-}
-
-.vol_inner{
-	width: 40px;
-	height: 100%;
-	background-color: white;
-}
-
 .hidden{
 	visibility: hidden;
 	position: absolute;
@@ -197,15 +159,6 @@ html, body{
 	animation-direction: reverse;
 	animation-fill-mode: forwards;
 	animation-duration: .3s;
-}
-
-@keyframes fold_vol{
-	from{
-		width: 80px;
-	}
-	to{
-		width: 0px;
-	}
 }
 
 @keyframes fade_sb{

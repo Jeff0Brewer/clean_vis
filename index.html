@@ -71,11 +71,10 @@
 		uniform float u_IR;
 
 		void main(){
-			float r = 0.0, mid = 0.0, alpha = 1.0, scl_f = 1.5;
+			float r = 0.0, alpha = 1.0, scl_f = 1.5;
 			vec2 cxy = 2.0*gl_PointCoord - 1.0;
 			r = dot(cxy,cxy);
-			mid = (1.0 + u_IR)/2.0;
-			alpha = pow(max(1.0 - pow(abs(mid/scl_f - r*scl_f), 1.5), 0.0), 50.0);
+			alpha = pow(max(1.0 - pow(abs((1.0 + u_IR)/2.0/scl_f - r*scl_f), 1.5), 0.0), 50.0);
 			gl_FragColor = vec4(1.0, 1.0, 1.0, alpha);
 		}
 	</script>

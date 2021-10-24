@@ -6,13 +6,14 @@ canvas.height = window.innerHeight * devicePixelRatio;
 //initialize audio analyser variable
 let fft = new FFT();
 
-//initialize menu control object
+//initialize menu object
 let file = 'Petit Biscuit - Memories.mp3'
 let menu = new Menu();
 menu.add_item(file.substring(0, file.lastIndexOf('.')), file);
 menu.select_item(0);
 
-//units in px
+//visualization parameters
+//sizes in px
 let point_size = 30;
 let point_space = 12;
 let border_size = 200;
@@ -35,9 +36,7 @@ function main(){
 
 		//update and draw visualizations
 		if(elapsed < 500){
-			if(fft.actx != null){
-				fft.get_data();
-			}
+			if(fft.actx){ fft.get_data(); }
 			menu.update(elapsed);
 			vis.update(elapsed, fft, canvas);
 
