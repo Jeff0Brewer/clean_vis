@@ -4,6 +4,7 @@ class CleanVis{
         point_space *= devicePixelRatio;
         border_size *= devicePixelRatio;
         corner_size *= devicePixelRatio;
+        corner_space *= devicePixelRatio;
         this.num = Math.floor((c.width - 2*border_size)/(point_size + point_space));
         this.w = c.width - 2*border_size;
         this.h = c.height - 2*border_size;
