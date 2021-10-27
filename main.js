@@ -17,6 +17,8 @@ menu.select_item(0);
 let point_size = 30;
 let point_space = 12;
 let border_size = 200;
+let corner_size = 7;
+let corner_space = 20;
 let vis = null;
 
 function main(){
@@ -24,7 +26,7 @@ function main(){
 	setup_gl();
 
 	//initialize visualization
-	vis = new CleanVis(point_size, point_space, border_size, [0, 1], canvas);
+	vis = new CleanVis(point_size, point_space, border_size, corner_size, corner_space, [0, 1], canvas);
 
 	//start drawing loop
 	let last_t = Date.now();
@@ -65,6 +67,6 @@ document.body.onresize = function(){
 		gl.viewport(0, 0, canvas.width, canvas.height);
 	}
 	if(vis){
-		vis = new CleanVis(point_size, point_space, border_size, [0, 1], canvas);
+		vis = new CleanVis(point_size, point_space, border_size, corner_size, corner_space, [0, 1], canvas);
 	}
 }

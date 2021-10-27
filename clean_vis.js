@@ -1,8 +1,9 @@
 class CleanVis{
-    constructor(point_size, point_space, border_size, shader_inds, c){
+    constructor(point_size, point_space, border_size, corner_size, corner_space, shader_inds, c){
         point_size *= devicePixelRatio;
         point_space *= devicePixelRatio;
         border_size *= devicePixelRatio;
+        corner_size *= devicePixelRatio;
         this.num = Math.floor((c.width - 2*border_size)/(point_size + point_space));
         this.w = c.width - 2*border_size;
         this.h = c.height - 2*border_size;
@@ -23,9 +24,34 @@ class CleanVis{
             this.bars.push(new FreqBar(max_f, memory));
         }
 
-        this.lin_buf = new Float32Array(12*this.num*this.fpv);
+        let pt = .5*point_size + corner_space, cs = corner_size, dpr = devicePixelRatio;
+        let c0 = [
+            -pt,-pt, -pt,-pt+cs, -pt+dpr,-pt+cs,
+            -pt,-pt, -pt+dpr,-pt+cs, -pt+dpr,-pt,
+            -pt,-pt, -pt+cs,-pt, -pt+cs,-pt+dpr,
+            -pt,-pt, -pt+cs,-pt+dpr, -pt,-pt+dpr
+        ];
+
+        let c1 = [...c0];
+        for(let i = 0; i < c1.length; i += 2){
+            c1[i] = this.w - c1[i];
+        }
+
+        let c23 = [...c0, ...c1];
+        for(let i = 1; i < c23.length; i += 2){
+            c23[i] = this.h - c23[i];
+        }
+
+        let corners = [...c0, ...c1, ...c23];
+
+        this.lin_buf = new Float32Array(12*this.num*this.fpv + corners.length);
         this.dot_buf = new Float32Array(this.num*this.fpv);
         this.fsize = this.lin_buf.BYTES_PER_ELEMENT;
+
+        let lin_len = this.lin_buf.length - corners.length;
+        for(let i = 0; i < corners.length; i++){
+            this.lin_buf[lin_len + i] = corners[i];
+        }
 
         let proj_matrix = mat4.ortho(mat4.create(), 0, c.width, 0, c.height, -1, 1);
 
@@ -50,7 +76,7 @@ class CleanVis{
 		gl.enableVertexAttribArray(this.a_Pos_dot);
 
         this.u_Radius = gl.getUniformLocation(gl.program, 'u_Radius');
-        this.u_IR = gl.getUniformLocation(gl.program, 'u_IR');
+        this.u_FRad = gl.getUniformLocation(gl.program, 'u_FRad');
         gl.uniform2fv(gl.getUniformLocation(gl.program, 'u_Off'), this.offset);
         gl.uniformMatrix4fv(gl.getUniformLocation(gl.program, 'u_Proj'), false, proj_matrix);
     }
@@ -100,7 +126,7 @@ class CleanVis{
         gl.bufferData(gl.ARRAY_BUFFER, this.dot_buf, gl.DYNAMIC_DRAW);
 		gl.vertexAttribPointer(this.a_Pos_dot, this.fpv, gl.FLOAT, false, this.fsize*this.fpv, 0);
         gl.uniform1f(this.u_Radius, this.d);
-        gl.uniform1f(this.u_IR, 1 - 1/this.d);
+        gl.uniform1f(this.u_FRad, 1 - 1/this.d);
         gl.drawArrays(gl.POINTS, 0, this.dot_buf.length / this.fpv);
 
         switch_shader(this.sh.lin);
@@ -134,7 +160,7 @@ class FreqBar{
             if(key < min_time){ this.freqs.delete(key); }
         }
 
-        this.top = .85*this.top + .15*Math.max(...this.freqs.values());
-        this.bot = .85*this.bot + .15*Math.min(...this.freqs.values());
+        this.top = Math.max(this.mid, .9*this.top + .1*Math.max(...this.freqs.values()));
+        this.bot = Math.min(this.mid, .9*this.bot + .1*Math.min(...this.freqs.values()));
     }
 }
