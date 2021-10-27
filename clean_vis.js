@@ -6,17 +6,6 @@ class CleanVis{
         corner_size *= devicePixelRatio;
         corner_space *= devicePixelRatio;
         this.num = Math.floor((c.width - 2*border_size)/(point_size + point_space));
-        this.w = c.width - 2*border_size;
-        this.h = c.height - 2*border_size;
-        this.d = point_size;
-        this.r = this.d/2;
-        this.offset = [Math.floor(border_size), Math.floor(border_size)];
-
-        this.fpv = 2;
-        this.sh = {
-            lin: shader_inds[0],
-            dot: shader_inds[1]
-        };
 
         this.bars = [];
         let max_f = 255;
@@ -25,6 +14,17 @@ class CleanVis{
             this.bars.push(new FreqBar(max_f, memory));
         }
 
+        this.w = c.width - 2*border_size;
+        this.h = c.height - 2*border_size;
+        this.d = point_size;
+        this.r = this.d/2;
+        this.offset = [Math.floor(border_size), Math.floor(border_size)];
+        this.sh = {
+            lin: shader_inds[0],
+            dot: shader_inds[1]
+        };
+        this.fpv = 2;
+
         let pt = .5*point_size + corner_space, cs = corner_size, dpr = devicePixelRatio;
         let c0 = [
             -pt,-pt, -pt,-pt+cs, -pt+dpr,-pt+cs,
@@ -32,17 +32,10 @@ class CleanVis{
             -pt,-pt, -pt+cs,-pt, -pt+cs,-pt+dpr,
             -pt,-pt, -pt+cs,-pt+dpr, -pt,-pt+dpr
         ];
-
         let c1 = [...c0];
-        for(let i = 0; i < c1.length; i += 2){
-            c1[i] = this.w - c1[i];
-        }
-
+        for(let i = 0; i < c1.length; i += 2){ c1[i] = this.w - c1[i]; }
         let c23 = [...c0, ...c1];
-        for(let i = 1; i < c23.length; i += 2){
-            c23[i] = this.h - c23[i];
-        }
-
+        for(let i = 1; i < c23.length; i += 2){ c23[i] = this.h - c23[i]; }
         let corners = [...c0, ...c1, ...c23];
 
         this.lin_buf = new Float32Array(12*this.num*this.fpv + corners.length);
