@@ -21,6 +21,8 @@ let corner_size = 7;
 let corner_space = 20;
 let vis = null;
 
+let grad = new GradientBg(document.body, .9);
+
 function main(){
 	//setup gl and uniforms
 	setup_gl();
@@ -41,6 +43,7 @@ function main(){
 			if(fft.actx){ fft.get_data(); }
 			menu.update(elapsed);
 			vis.update(elapsed, fft, canvas);
+			grad.update(fft);
 
 			gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
 			vis.draw();

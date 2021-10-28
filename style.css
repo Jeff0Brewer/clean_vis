@@ -1,10 +1,22 @@
+:root{
+	--gradient: linear-gradient(45deg,
+		#000000 0%,
+		#56237a 23%,
+		#256eaa 46%,
+		#fce055 70%
+	);
+}
+
 html, body{
 	position: relative;
-	overflow: hidden;;
+	overflow: hidden;
+	z-index: 0;
 	width: 100%;
 	height: 100%;
 	margin: 0;
-	background: #000000;
+	background-image: var(--gradient);
+	background-size: 400%;
+	background-position: 0% 0%;
 }
 
 .c{
@@ -16,6 +28,7 @@ html, body{
 	width: 100vw;
 	height: 100vh;
 	pointer-events: none;
+	z-index: 10;
 }
 
 .menu{
