@@ -1,9 +1,10 @@
 :root{
 	--gradient: linear-gradient(45deg,
 		#000000 0%,
-		#56237a 23%,
-		#256eaa 46%,
-		#fce055 70%
+		#56237a 35%,
+		#256eaa 50%,
+		#fce055 70%,
+		#ffff00 100%
 	);
 }
 
@@ -29,6 +30,14 @@ html, body{
 	height: 100vh;
 	pointer-events: none;
 	z-index: 10;
+}
+
+.noise_overlay{
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	background-repeat: repeat;
+	opacity: .03;
 }
 
 .menu{

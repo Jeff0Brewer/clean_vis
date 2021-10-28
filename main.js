@@ -21,7 +21,7 @@ let corner_size = 7;
 let corner_space = 20;
 let vis = null;
 
-let grad = new GradientBg(document.body, .9);
+let grad = new GradientBg(document.body, .95);
 
 function main(){
 	//setup gl and uniforms
