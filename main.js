@@ -13,7 +13,7 @@ menu.add_item(file.substring(0, file.lastIndexOf('.')), file);
 menu.select_item(0);
 
 //visualization parameters
-//sizes in px
+//sizes in px (integer)
 let point_size = 30;
 let point_space = 12;
 let border_size = 200;

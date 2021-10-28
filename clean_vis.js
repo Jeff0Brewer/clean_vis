@@ -6,7 +6,7 @@ class CleanVis{
         corner_size *= devicePixelRatio;
         corner_space *= devicePixelRatio;
         this.num = Math.floor((c.width - 2*border_size)/(point_size + point_space));
-
+        
         this.bars = [];
         let max_f = 255;
         let memory = 500;
@@ -154,7 +154,7 @@ class FreqBar{
             if(key < min_time){ this.freqs.delete(key); }
         }
 
-        this.top = Math.max(this.mid, .9*this.top + .1*Math.max(...this.freqs.values()));
-        this.bot = Math.min(this.mid, .9*this.bot + .1*Math.min(...this.freqs.values()));
+        this.top = Math.max(this.mid, .8*this.top + .2*Math.max(...this.freqs.values()));
+        this.bot = Math.min(this.mid, .8*this.bot + .2*Math.min(...this.freqs.values()));
     }
 }
