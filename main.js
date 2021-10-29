@@ -16,7 +16,7 @@ menu.select_item(0);
 //sizes in px (integer)
 let point_size = 30;
 let point_space = 12;
-let border_size = 200;
+let border_size = 150;
 let corner_size = 7;
 let corner_space = 20;
 let vis = null;

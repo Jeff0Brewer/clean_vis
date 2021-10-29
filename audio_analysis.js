@@ -13,7 +13,7 @@ FFT.prototype.init_ctx = function(file){
 	this.audio_src = this.actx.createMediaElementSource(this.audio);
 	this.analyser = this.actx.createAnalyser();
 	this.analyser.fftSize = this.size;
-	this.analyser.smoothingTimeConstant = .75;
+	this.analyser.smoothingTimeConstant = .8;
 	this.audio_src.connect(this.analyser);
 	this.audio_src.connect(this.actx.destination);
 }

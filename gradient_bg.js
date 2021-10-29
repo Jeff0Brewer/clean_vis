@@ -3,7 +3,6 @@ class GradientBg{
         this.dom = dom_element;
         this.sm = smoothing;
         this.x = 0;
-        this.y = 0;
         this.to_pos = val => {
             return (Math.pow(val, 3)*100).toFixed();
         };
