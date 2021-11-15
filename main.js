@@ -17,11 +17,9 @@ menu.select_item(0);
 let point_size = 30;
 let point_space = 12;
 let border_size = 150;
-let corner_size = 7;
+let corner_size = 8;
 let corner_space = 20;
 let vis = null;
-
-let grad = new GradientBg(document.body, .95);
 
 function main(){
 	//setup gl and uniforms
@@ -43,7 +41,6 @@ function main(){
 			if(fft.actx){ fft.get_data(); }
 			menu.update(elapsed);
 			vis.update(elapsed, fft, canvas);
-			grad.update(fft);
 
 			gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
 			vis.draw();

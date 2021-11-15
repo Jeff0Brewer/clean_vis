@@ -1,12 +1,3 @@
-:root{
-	--gradient: linear-gradient(45deg,
-		#000000 0%,
-		#56237a 20%,
-		#256eaa 40%,
-		#fce055 70%,
-		#ffff00 100%
-	);
-}
 
 html, body{
 	position: relative;
@@ -15,9 +6,7 @@ html, body{
 	width: 100%;
 	height: 100%;
 	margin: 0;
-	background-image: var(--gradient);
-	background-size: 500%;
-	background-position: 0% 0%;
+	background-color: black;
 }
 
 .c{
@@ -29,7 +18,7 @@ html, body{
 	width: 100vw;
 	height: 100vh;
 	pointer-events: none;
-	z-index: 10;
+	z-index: 1;
 }
 
 .noise_overlay{
@@ -44,7 +33,7 @@ html, body{
 	position: absolute;
 	left: 0;
 	top: 5px;
-	width: 325px;
+	width: 335px;
 	user-select: none;
 	z-index: 2;
 }
@@ -65,7 +54,7 @@ html, body{
 .song_list{
 	position: relative;
 	float: left;
-	width: 325px;
+	width: 100%;
 	max-height: 70vh;
 	padding-right: 20px;
 	overflow-y: scroll;
@@ -79,12 +68,12 @@ html, body{
 	width: 100%;
 	height: 40px;
 	overflow: hidden;
-	color: white;
+	color: #777777;
 	font-family: roboto;
 	font-size: 14px;
 	line-height: 40px;
 	padding-left: 10px;
-	opacity: .4;
+	background-color: black;
 }
 
 .mi{
@@ -92,7 +81,7 @@ html, body{
 }
 
 .selected{
-	opacity: 1;
+	color: #FFFFFF;
 	height: 50px;
 }
 
@@ -106,6 +95,7 @@ html, body{
 .play_pause{
 	position: relative;
 	float: right;
+	right: 10px;
 	cursor: pointer;
 }
 
@@ -113,7 +103,7 @@ html, body{
 	position: relative;
 	border-style: solid;
 	border-width: 0 1px 0 1px;
-	width: calc(100% - 12px);
+	width: calc(100% - 22px);
 	height: 3px;
 	cursor: grab;
 }
@@ -128,12 +118,14 @@ html, body{
 
 .list_wrapper{
 	display: inline-block;
-	width: 325px;
+	width: 100%;
 	overflow-x: hidden;
 	height: auto;
 }
 
 .menu_div{
+	position: relative;
+	top: -4px;
 	border-style: solid;
 	border-color: white;
 	border-width: 1px 0 0 0;
@@ -147,6 +139,8 @@ html, body{
 	line-height: 40px;
 	opacity: 1;
 	cursor: pointer;
+	color: white;
+	background-color: transparent;
 }
 
 .fb{
@@ -205,10 +199,12 @@ html, body{
 
 @keyframes fade_mi{
 	from{
-		opacity: .4;
+		color: #777777;
+		background-color: black;
 	}
 	to{
-		opacity: 0;
+		color: transparent;
+		background-color: transparent;
 	}
 }
 
